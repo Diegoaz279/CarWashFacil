@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#F3F6FB"
+    NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="18" VerticalOptions="Center">
+
+            <Frame CornerRadius="26"
+                   Padding="24"
+                   BackgroundColor="#111827"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="CarWash Fácil"
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="White" />
+
+                    <Label Text="Control operativo del carwash"
+                           FontSize="14"
+                           HorizontalOptions="Center"
+                           TextColor="#D1D5DB" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="18"
+                   Padding="20"
+                   BackgroundColor="White"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Iniciar sesión"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Entry Placeholder="Usuario"
+                           Text="{Binding Usuario}"
+                           BackgroundColor="#F3F4F6"
+                           HeightRequest="50" />
+
+                    <Entry Placeholder="Contraseña"
+                           IsPassword="True"
+                           Text="{Binding Password}"
+                           BackgroundColor="#F3F4F6"
+                           HeightRequest="50" />
+
+                    <Button Text="Entrar"
+                            HeightRequest="50"
+                            BackgroundColor="#2563EB"
+                            TextColor="White"
+                            CornerRadius="12"
+                            Command="{Binding IniciarSesionCommand}" />
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       IsVisible="{Binding IsBusy}"
+                                       Color="#2563EB"
+                                       HorizontalOptions="Center" />
+
+                    <Label Text="Usuario: admin | Contraseña: 1234"
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

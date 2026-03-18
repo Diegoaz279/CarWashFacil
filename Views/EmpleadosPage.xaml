@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.EmpleadosPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Empleados"
+    BackgroundColor="#F3F6FB">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+
+            <Frame CornerRadius="22"
+                   Padding="18"
+                   BackgroundColor="#111827"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Gestión de empleados"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="Toque un empleado para ver acciones."
+                           FontSize="14"
+                           TextColor="#D1D5DB" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="18"
+                   Padding="16"
+                   BackgroundColor="White"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Nuevo empleado"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1F2937" />
+
+                    <Entry Placeholder="Nombre"
+                           Text="{Binding Nombre}" />
+
+                    <Entry Placeholder="Teléfono"
+                           Text="{Binding Telefono}"
+                           Keyboard="Telephone" />
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Activo"
+                               VerticalOptions="Center" />
+                        <Switch IsToggled="{Binding Activo}" />
+                    </HorizontalStackLayout>
+
+                    <Button Text="Guardar empleado"
+                            HeightRequest="48"
+                            CornerRadius="14"
+                            BackgroundColor="#2563EB"
+                            TextColor="White"
+                            Command="{Binding GuardarEmpleadoCommand}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="18"
+                   Padding="16"
+                   BackgroundColor="White"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Lista de empleados"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1F2937" />
+
+                    <CollectionView ItemsSource="{Binding Empleados}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="16"
+                                       Padding="14"
+                                       Margin="0,6"
+                                       BackgroundColor="#F9FAFB"
+                                       BorderColor="#E5E7EB">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SeleccionarEmpleadoCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="5">
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                               Text="{Binding Nombre}"
+                                               FontAttributes="Bold"
+                                               FontSize="18"
+                                               TextColor="#111827" />
+
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               Text="{Binding Activo, StringFormat='Activo: {0}'}"
+                                               TextColor="#2563EB"
+                                               FontSize="12" />
+
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                               Text="{Binding Telefono}"
+                                               TextColor="#6B7280" />
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#2563EB"
+                               HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Inicio"
+    BackgroundColor="#F3F6FB">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="14">
+
+            <Frame CornerRadius="22"
+                   Padding="18"
+                   BackgroundColor="#111827"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Bienvenido a CarWash Fácil"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="Resumen automático del día"
+                           FontSize="14"
+                           TextColor="#D1D5DB" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+
+                <Frame Grid.Row="0" Grid.Column="0" CornerRadius="18" BackgroundColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrALavadosCommand}" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label Text="Lavados de hoy"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Label Text="{Binding LavadosHoy}"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#2563EB" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Row="0" Grid.Column="1" CornerRadius="18" BackgroundColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrACajaCommand}" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label Text="Ingresos hoy"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Label Text="{Binding IngresosHoy, StringFormat='RD${0:F2}'}"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#059669" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.Column="0" CornerRadius="18" BackgroundColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrACajaCommand}" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label Text="Gastos hoy"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Label Text="{Binding GastosHoy, StringFormat='RD${0:F2}'}"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#DC2626" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.Column="1" CornerRadius="18" BackgroundColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrACajaCommand}" />
+                    </Frame.GestureRecognizers>
+                    <VerticalStackLayout>
+                        <Label Text="Balance"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Label Text="{Binding BalanceHoy, StringFormat='RD${0:F2}'}"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#7C3AED" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <Frame CornerRadius="18" BackgroundColor="White">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Atajos rápidos"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#111827" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0"
+                                Text="Ver lavados"
+                                Command="{Binding IrALavadosCommand}"
+                                BackgroundColor="#2563EB"
+                                TextColor="White"
+                                CornerRadius="14"
+                                HeightRequest="48" />
+
+                        <Button Grid.Column="1"
+                                Text="Ver caja"
+                                Command="{Binding IrACajaCommand}"
+                                BackgroundColor="#111827"
+                                TextColor="White"
+                                CornerRadius="14"
+                                HeightRequest="48" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               Color="#2563EB" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

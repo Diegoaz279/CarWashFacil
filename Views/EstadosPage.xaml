@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.EstadosPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Estados"
+    BackgroundColor="#F3F6FB">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <VerticalStackLayout Grid.Row="0" Padding="16,16,16,8" Spacing="12">
+            <Label Text="Estados del sistema"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="#111827" />
+
+            <Button Text="Limpiar eventos"
+                    BackgroundColor="#2563EB"
+                    TextColor="White"
+                    CornerRadius="14"
+                    HeightRequest="50"
+                    Command="{Binding LimpiarCommand}" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,0,16,16" Spacing="10">
+                <CollectionView ItemsSource="{Binding Eventos}"
+                                SelectionMode="None"
+                                VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="16"
+                                   Margin="0,6"
+                                   Padding="14"
+                                   BackgroundColor="White"
+                                   BorderColor="#E5E7EB"
+                                   HasShadow="True">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Mensaje}"
+                                           FontAttributes="Bold"
+                                           FontSize="18"
+                                           TextColor="#111827" />
+                                    <Label Text="{Binding FechaTexto}"
+                                           FontSize="13"
+                                           TextColor="#6B7280" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   IsVisible="{Binding IsBusy}"
+                                   Color="#2563EB"
+                                   HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.ReportesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Reportes"
+    BackgroundColor="#F6F7FB">
+
+    <Grid Padding="15" RowDefinitions="Auto,*">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Reporte mensual"
+                       FontSize="26"
+                       FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                    <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="White" CornerRadius="16">
+                        <VerticalStackLayout>
+                            <Label Text="Lavados del mes" FontAttributes="Bold" />
+                            <Label Text="{Binding TotalLavadosMes}" FontSize="24" TextColor="#2563EB" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="White" CornerRadius="16">
+                        <VerticalStackLayout>
+                            <Label Text="Ingresos del mes" FontAttributes="Bold" />
+                            <Label Text="{Binding IngresosMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#059669" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="White" CornerRadius="16">
+                        <VerticalStackLayout>
+                            <Label Text="Gastos del mes" FontAttributes="Bold" />
+                            <Label Text="{Binding GastosMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#DC2626" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="White" CornerRadius="16">
+                        <VerticalStackLayout>
+                            <Label Text="Balance mensual" FontAttributes="Bold" />
+                            <Label Text="{Binding BalanceMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#7C3AED" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <CollectionView Grid.Row="1" Margin="0,12,0,0" ItemsSource="{Binding LavadosMes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="14" Margin="0,5" BackgroundColor="White">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Cliente}" FontAttributes="Bold" />
+                            <Label Text="{Binding Placa, StringFormat='Placa: {0}'}" />
+                            <Label Text="{Binding EmpleadoNombre, StringFormat='Empleado: {0}'}" />
+                            <Label Text="{Binding Precio, StringFormat='RD${0:F2}'}" />
+                            <Label Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}"
+                                   FontSize="12"
+                                   TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

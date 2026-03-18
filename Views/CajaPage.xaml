@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CarWashFacil.Views.CajaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Caja"
+    BackgroundColor="#F3F6FB">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <Frame CornerRadius="22"
+                       Padding="18"
+                       BackgroundColor="#111827"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Caja del día"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                        <Label Text="Ingresos y gastos actualizados automáticamente"
+                               FontSize="14"
+                               TextColor="#D1D5DB" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                    <Frame Grid.Row="0" Grid.Column="0" CornerRadius="18" BackgroundColor="White">
+                        <VerticalStackLayout>
+                            <Label Text="Ingresos hoy" FontAttributes="Bold" TextColor="#374151" />
+                            <Label Text="{Binding IngresosHoy, StringFormat='RD${0:F2}'}"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#059669" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="0" Grid.Column="1" CornerRadius="18" BackgroundColor="White">
+                        <VerticalStackLayout>
+                            <Label Text="Gastos hoy" FontAttributes="Bold" TextColor="#374151" />
+                            <Label Text="{Binding GastosHoy, StringFormat='RD${0:F2}'}"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#DC2626" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Row="1" Grid.ColumnSpan="2" CornerRadius="18" BackgroundColor="White">
+                        <VerticalStackLayout>
+                            <Label Text="Balance actual" FontAttributes="Bold" TextColor="#374151" />
+                            <Label Text="{Binding BalanceHoy, StringFormat='RD${0:F2}'}"
+                                   FontSize="26"
+                                   FontAttributes="Bold"
+                                   TextColor="#2563EB" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <Frame CornerRadius="18"
+                       Padding="16"
+                       BackgroundColor="White"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Registrar gasto"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#1F2937" />
+
+                        <Entry Placeholder="Descripción del gasto"
+                               Text="{Binding Descripcion}" />
+
+                        <Entry Placeholder="Monto"
+                               Keyboard="Numeric"
+                               Text="{Binding Monto}" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    Text="Guardar gasto"
+                                    HeightRequest="48"
+                                    CornerRadius="14"
+                                    BackgroundColor="#DC2626"
+                                    TextColor="White"
+                                    Command="{Binding RegistrarGastoCommand}" />
+
+                            <Button Grid.Column="1"
+                                    Text="Refrescar"
+                                    HeightRequest="48"
+                                    CornerRadius="14"
+                                    BackgroundColor="#E5E7EB"
+                                    TextColor="#111827"
+                                    Command="{Binding RefrescarCommand}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <CollectionView Grid.Row="1"
+                        Margin="16,0,16,16"
+                        ItemsSource="{Binding Movimientos}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="16"
+                           Padding="14"
+                           Margin="0,6"
+                           BackgroundColor="White"
+                           BorderColor="#E5E7EB">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="4">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Descripcion}"
+                                   FontAttributes="Bold"
+                                   FontSize="17"
+                                   TextColor="#111827" />
+
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding Tipo}"
+                                   FontAttributes="Bold"
+                                   TextColor="#2563EB" />
+
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}"
+                                   FontSize="12"
+                                   TextColor="#6B7280" />
+
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding Monto, StringFormat='RD${0:F2}'}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#059669" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
