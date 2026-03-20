@@ -3,69 +3,139 @@
     x:Class="CarWashFacil.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#F3F6FB"
+    BackgroundColor="#F1F5F9"
     NavigationPage.HasNavigationBar="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="18" VerticalOptions="Center">
+    <Grid>
+        <!-- Fondo decorativo -->
+        <BoxView VerticalOptions="Start" 
+                 HeightRequest="300"
+                 BackgroundColor="#2563EB"
+                 Opacity="0.15" />
 
-            <Frame CornerRadius="26"
-                   Padding="24"
-                   BackgroundColor="#111827"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="CarWash Fácil"
-                           FontSize="30"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           TextColor="White" />
+        <ScrollView VerticalOptions="Center">
+            <VerticalStackLayout Padding="24,40" Spacing="24">
 
-                    <Label Text="Control operativo del carwash"
-                           FontSize="14"
-                           HorizontalOptions="Center"
-                           TextColor="#D1D5DB" />
-                </VerticalStackLayout>
-            </Frame>
+                <!-- Logo Principal -->
+                <Border StrokeShape="RoundRectangle 28"
+                        Padding="32"
+                        Background="#1E293B"
+                        Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}"
+                        Margin="0,0,0,8">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Label Text="🚗"
+                               FontSize="56"
+                               HorizontalOptions="Center" />
+                        <HorizontalStackLayout Spacing="0" HorizontalOptions="Center">
+                            <Label Text="CarWash"
+                                   FontSize="32"
+                                   FontAttributes="Bold"
+                                   TextColor="White" />
+                            <Label Text="Fácil"
+                                   FontSize="32"
+                                   FontAttributes="Bold"
+                                   TextColor="#06B6D4" />
+                        </HorizontalStackLayout>
+                        <Label Text="Sistema de Gestión Operativa"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               TextColor="#94A3B8"
+                               Margin="0,8,0,0" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Frame CornerRadius="18"
-                   Padding="20"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="14">
-                    <Label Text="Iniciar sesión"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           TextColor="#111827" />
+                <!-- Formulario -->
+                <Border StrokeShape="RoundRectangle 24"
+                        Padding="28"
+                        Background="White"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                    <VerticalStackLayout Spacing="20">
+                        <Label Text="Iniciar Sesión"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="#1E293B"
+                               HorizontalOptions="Center" />
 
-                    <Entry Placeholder="Usuario"
-                           Text="{Binding Usuario}"
-                           BackgroundColor="#F3F4F6"
-                           HeightRequest="50" />
+                        <!-- Usuario -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Usuario"
+                                   FontSize="13"
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="Ingresa tu usuario"
+                                       Text="{Binding Usuario}"
+                                       HeightRequest="50"
+                                       Margin="16,0"
+                                       TextColor="#1E293B"
+                                       PlaceholderColor="#94A3B8"
+                                       FontSize="15"
+                                       ClearButtonVisibility="WhileEditing" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                    <Entry Placeholder="Contraseña"
-                           IsPassword="True"
-                           Text="{Binding Password}"
-                           BackgroundColor="#F3F4F6"
-                           HeightRequest="50" />
+                        <!-- Contraseña -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Contraseña"
+                                   FontSize="13"
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="••••••••"
+                                       IsPassword="True"
+                                       Text="{Binding Password}"
+                                       HeightRequest="50"
+                                       Margin="16,0"
+                                       TextColor="#1E293B"
+                                       PlaceholderColor="#94A3B8"
+                                       FontSize="15"
+                                       ClearButtonVisibility="WhileEditing" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                    <Button Text="Entrar"
-                            HeightRequest="50"
-                            BackgroundColor="#2563EB"
-                            TextColor="White"
-                            CornerRadius="12"
-                            Command="{Binding IniciarSesionCommand}" />
+                        <Button Text="Entrar al Sistema"
+                                HeightRequest="54"
+                                BackgroundColor="#2563EB"
+                                TextColor="White"
+                                CornerRadius="14"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Command="{Binding IniciarSesionCommand}"
+                                Margin="0,8,0,0" />
 
-                    <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                       IsVisible="{Binding IsBusy}"
-                                       Color="#2563EB"
-                                       HorizontalOptions="Center" />
+                        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                           IsVisible="{Binding IsBusy}"
+                                           Color="#2563EB"
+                                           Scale="0.8" />
 
-                    <Label Text="Usuario: admin | Contraseña: 1234"
-                           FontSize="12"
-                           HorizontalOptions="Center"
-                           TextColor="Gray" />
-                </VerticalStackLayout>
-            </Frame>
-        </VerticalStackLayout>
-    </ScrollView>
+                        <Border Background="#F1F5F9" 
+                                StrokeShape="RoundRectangle 10" 
+                                Padding="12"
+                                HorizontalOptions="Center">
+                            <HorizontalStackLayout Spacing="16">
+                                <Label Text="👤 admin" 
+                                       FontSize="12"
+                                       TextColor="#64748B"
+                                       FontAttributes="Bold" />
+                                <BoxView WidthRequest="1" 
+                                         BackgroundColor="#CBD5E1" 
+                                         HeightRequest="12"
+                                         VerticalOptions="Center" />
+                                <Label Text="🔒 1234" 
+                                       FontSize="12"
+                                       TextColor="#64748B"
+                                       FontAttributes="Bold" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

@@ -4,55 +4,159 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Estados"
-    BackgroundColor="#F3F6FB">
+    BackgroundColor="#F1F5F9">
 
     <Grid RowDefinitions="Auto,*">
 
-        <VerticalStackLayout Grid.Row="0" Padding="16,16,16,8" Spacing="12">
-            <Label Text="Estados del sistema"
-                   FontSize="26"
-                   FontAttributes="Bold"
-                   TextColor="#111827" />
+        <Border Grid.Row="0" 
+                StrokeShape="RoundRectangle 24"
+                Padding="20"
+                Margin="20,20,20,12"
+                Background="#1E293B"
+                Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <VerticalStackLayout Grid.Column="0" Spacing="6">
+                    <Label Text="📊 Estados del Sistema"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="Ciclo de vida: OnStart → OnSleep → OnResume"
+                           FontSize="13"
+                           TextColor="#94A3B8" />
+                </VerticalStackLayout>
 
-            <Button Text="Limpiar eventos"
-                    BackgroundColor="#2563EB"
-                    TextColor="White"
-                    CornerRadius="14"
-                    HeightRequest="50"
-                    Command="{Binding LimpiarCommand}" />
-        </VerticalStackLayout>
+                <Button Grid.Column="1"
+                        Text="🗑️ Limpiar"
+                        BackgroundColor="#374151"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="44"
+                        WidthRequest="100"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        Command="{Binding LimpiarCommand}" />
+            </Grid>
+        </Border>
 
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="16,0,16,16" Spacing="10">
-                <CollectionView ItemsSource="{Binding Eventos}"
-                                SelectionMode="None"
-                                VerticalOptions="FillAndExpand">
+            <VerticalStackLayout Padding="20,8,20,20" Spacing="12">
+
+                <!-- Leyenda de colores -->
+                <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*" ColumnSpacing="8">
+                    <BoxView Grid.Column="0" WidthRequest="12" HeightRequest="12" CornerRadius="6" BackgroundColor="#10B981"/>
+                    <Label Grid.Column="1" Text="Start/Resume" FontSize="11" TextColor="#64748B"/>
+                    <BoxView Grid.Column="2" WidthRequest="12" HeightRequest="12" CornerRadius="6" BackgroundColor="#F59E0B"/>
+                    <Label Grid.Column="3" Text="Sleep" FontSize="11" TextColor="#64748B"/>
+                    <BoxView Grid.Column="4" WidthRequest="12" HeightRequest="12" CornerRadius="6" BackgroundColor="#2563EB"/>
+                    <Label Grid.Column="5" Text="Página" FontSize="11" TextColor="#64748B"/>
+                    <BoxView Grid.Column="6" WidthRequest="12" HeightRequest="12" CornerRadius="6" BackgroundColor="#7C3AED"/>
+                    <Label Grid.Column="7" Text="Window" FontSize="11" TextColor="#64748B"/>
+                </Grid>
+
+                <CollectionView ItemsSource="{Binding Eventos}" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame CornerRadius="16"
-                                   Margin="0,6"
-                                   Padding="14"
-                                   BackgroundColor="White"
-                                   BorderColor="#E5E7EB"
-                                   HasShadow="True">
-                                <VerticalStackLayout Spacing="4">
-                                    <Label Text="{Binding Mensaje}"
-                                           FontAttributes="Bold"
-                                           FontSize="18"
-                                           TextColor="#111827" />
-                                    <Label Text="{Binding FechaTexto}"
-                                           FontSize="13"
-                                           TextColor="#6B7280" />
-                                </VerticalStackLayout>
-                            </Frame>
+                            <Grid ColumnDefinitions="4,*" Margin="0,6">
+                                <!-- Barra de color según tipo -->
+                                <BoxView Grid.Column="0" WidthRequest="4" VerticalOptions="Fill">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Tipo}" Value="Exito">
+                                            <Setter Property="BackgroundColor" Value="#10B981" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Tipo}" Value="Advertencia">
+                                            <Setter Property="BackgroundColor" Value="#F59E0B" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Tipo}" Value="Info">
+                                            <Setter Property="BackgroundColor" Value="#2563EB" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Tipo}" Value="Window">
+                                            <Setter Property="BackgroundColor" Value="#7C3AED" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Tipo}" Value="Error">
+                                            <Setter Property="BackgroundColor" Value="#EF4444" />
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+
+                                <Border Grid.Column="1"
+                                        StrokeShape="RoundRectangle 16"
+                                        Padding="16"
+                                        Background="White"
+                                        Stroke="#E2E8F0"
+                                        Shadow="{Shadow Brush=Transparent}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <HorizontalStackLayout Spacing="8">
+                                            <Label Text="{Binding Icono}" FontSize="16" />
+                                            <Label Text="{Binding Mensaje}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="15"
+                                                   TextColor="#1E293B"
+                                                   LineBreakMode="WordWrap" />
+                                        </HorizontalStackLayout>
+
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding FechaTexto}"
+                                                   FontSize="12"
+                                                   TextColor="#94A3B8"
+                                                   FontAttributes="Italic" />
+
+                                            <Border Grid.Column="1"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    Padding="6,2">
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Exito">
+                                                        <Setter Property="Background" Value="#D1FAE5"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Advertencia">
+                                                        <Setter Property="Background" Value="#FEF3C7"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Info">
+                                                        <Setter Property="Background" Value="#DBEAFE"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Window">
+                                                        <Setter Property="Background" Value="#E9D5FF"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Error">
+                                                        <Setter Property="Background" Value="#FEE2E2"/>
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <Label Text="{Binding Tipo}" FontSize="9" FontAttributes="Bold">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Exito">
+                                                            <Setter Property="TextColor" Value="#059669"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Advertencia">
+                                                            <Setter Property="TextColor" Value="#D97706"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Info">
+                                                            <Setter Property="TextColor" Value="#2563EB"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Window">
+                                                            <Setter Property="TextColor" Value="#7C3AED"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Error">
+                                                            <Setter Property="TextColor" Value="#DC2626"/>
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                            </Border>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Spacing="12" Margin="0,40">
+                            <Label Text="📋" FontSize="56" HorizontalOptions="Center" />
+                            <Label Text="No hay eventos registrados" FontSize="16" TextColor="#64748B" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
                 </CollectionView>
 
-                <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                   IsVisible="{Binding IsBusy}"
-                                   Color="#2563EB"
-                                   HorizontalOptions="Center" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#2563EB" Scale="0.8" />
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

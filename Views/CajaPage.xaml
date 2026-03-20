@@ -4,133 +4,252 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Caja"
-    BackgroundColor="#F3F6FB">
+    BackgroundColor="#F1F5F9">
 
     <Grid RowDefinitions="Auto,*">
 
         <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="16" Spacing="12">
+            <VerticalStackLayout Padding="20" Spacing="16">
 
-                <Frame CornerRadius="22"
-                       Padding="18"
-                       BackgroundColor="#111827"
-                       HasShadow="False">
+                <!-- Header -->
+                <Border StrokeShape="RoundRectangle 24"
+                        Padding="20"
+                        Background="#1E293B"
+                        Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}">
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Caja del día"
+                        <Label Text="💰 Caja del Día"
                                FontSize="24"
                                FontAttributes="Bold"
                                TextColor="White" />
-                        <Label Text="Ingresos y gastos actualizados automáticamente"
+                        <Label Text="Control de ingresos y gastos"
                                FontSize="14"
-                               TextColor="#D1D5DB" />
+                               TextColor="#94A3B8" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
-                    <Frame Grid.Row="0" Grid.Column="0" CornerRadius="18" BackgroundColor="White">
-                        <VerticalStackLayout>
-                            <Label Text="Ingresos hoy" FontAttributes="Bold" TextColor="#374151" />
-                            <Label Text="{Binding IngresosHoy, StringFormat='RD${0:F2}'}"
-                                   FontSize="22"
-                                   FontAttributes="Bold"
-                                   TextColor="#059669" />
-                        </VerticalStackLayout>
-                    </Frame>
+                <!-- Balance Principal -->
+                <Border StrokeShape="RoundRectangle 24"
+                        Padding="24"
+                        Background="#2563EB"
+                        Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.25, Radius=12}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label Text="Balance Actual"
+                               FontSize="14"
+                               TextColor="#BFDBFE"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding BalanceHoy, StringFormat='RD${0:N2}'}"
+                               FontSize="42"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
 
-                    <Frame Grid.Row="0" Grid.Column="1" CornerRadius="18" BackgroundColor="White">
-                        <VerticalStackLayout>
-                            <Label Text="Gastos hoy" FontAttributes="Bold" TextColor="#374151" />
-                            <Label Text="{Binding GastosHoy, StringFormat='RD${0:F2}'}"
-                                   FontSize="22"
+                <!-- Ingresos vs Gastos -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Border Grid.Column="0" 
+                            StrokeShape="RoundRectangle 20" 
+                            Background="White"
+                            Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                            Padding="16">
+                        <VerticalStackLayout HorizontalOptions="Center">
+                            <Border StrokeShape="RoundRectangle 12"
+                                    Background="#D1FAE5"
+                                    Padding="8"
+                                    Shadow="{Shadow Brush=Transparent}"
+                                    HorizontalOptions="Center">
+                                <Label Text="📈"
+                                       FontSize="20" />
+                            </Border>
+                            <Label Text="Ingresos" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
                                    FontAttributes="Bold"
-                                   TextColor="#DC2626" />
+                                   Margin="0,8,0,0"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding IngresosHoy, StringFormat='RD${0:N0}'}"
+                                   FontSize="22" 
+                                   FontAttributes="Bold"
+                                   TextColor="#10B981"
+                                   HorizontalOptions="Center" />
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
 
-                    <Frame Grid.Row="1" Grid.ColumnSpan="2" CornerRadius="18" BackgroundColor="White">
-                        <VerticalStackLayout>
-                            <Label Text="Balance actual" FontAttributes="Bold" TextColor="#374151" />
-                            <Label Text="{Binding BalanceHoy, StringFormat='RD${0:F2}'}"
-                                   FontSize="26"
+                    <Border Grid.Column="1" 
+                            StrokeShape="RoundRectangle 20" 
+                            Background="White"
+                            Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                            Padding="16">
+                        <VerticalStackLayout HorizontalOptions="Center">
+                            <Border StrokeShape="RoundRectangle 12"
+                                    Background="#FEE2E2"
+                                    Padding="8"
+                                    Shadow="{Shadow Brush=Transparent}"
+                                    HorizontalOptions="Center">
+                                <Label Text="📉"
+                                       FontSize="20" />
+                            </Border>
+                            <Label Text="Gastos" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
                                    FontAttributes="Bold"
-                                   TextColor="#2563EB" />
+                                   Margin="0,8,0,0"
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding GastosHoy, StringFormat='RD${0:N0}'}"
+                                   FontSize="22" 
+                                   FontAttributes="Bold"
+                                   TextColor="#EF4444"
+                                   HorizontalOptions="Center" />
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
                 </Grid>
 
-                <Frame CornerRadius="18"
-                       Padding="16"
-                       BackgroundColor="White"
-                       HasShadow="True">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Registrar gasto"
+                <!-- Formulario Gasto -->
+                <Border StrokeShape="RoundRectangle 24"
+                        Padding="20"
+                        Background="White"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="➖ Registrar Gasto"
                                FontSize="20"
                                FontAttributes="Bold"
-                               TextColor="#1F2937" />
+                               TextColor="#1E293B" />
 
-                        <Entry Placeholder="Descripción del gasto"
-                               Text="{Binding Descripcion}" />
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Descripción" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="Ej: Compra de insumos"
+                                       Text="{Binding Descripcion}"
+                                       Margin="12,0"
+                                       HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                        <Entry Placeholder="Monto"
-                               Keyboard="Numeric"
-                               Text="{Binding Monto}" />
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Monto (RD$)" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="0.00"
+                                       Keyboard="Numeric"
+                                       Text="{Binding Monto}"
+                                       Margin="12,0"
+                                       HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
                             <Button Grid.Column="0"
-                                    Text="Guardar gasto"
-                                    HeightRequest="48"
+                                    Text="💾 Guardar Gasto"
+                                    HeightRequest="50"
                                     CornerRadius="14"
-                                    BackgroundColor="#DC2626"
+                                    BackgroundColor="#EF4444"
                                     TextColor="White"
+                                    FontAttributes="Bold"
                                     Command="{Binding RegistrarGastoCommand}" />
 
                             <Button Grid.Column="1"
-                                    Text="Refrescar"
-                                    HeightRequest="48"
+                                    Text="🔄 Refrescar"
+                                    HeightRequest="50"
                                     CornerRadius="14"
-                                    BackgroundColor="#E5E7EB"
-                                    TextColor="#111827"
+                                    BackgroundColor="#F1F5F9"
+                                    TextColor="#64748B"
+                                    FontAttributes="Bold"
                                     Command="{Binding RefrescarCommand}" />
                         </Grid>
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
 
+        <!-- Lista Movimientos -->
         <CollectionView Grid.Row="1"
-                        Margin="16,0,16,16"
+                        Margin="20,0,20,20"
                         ItemsSource="{Binding Movimientos}">
+            <CollectionView.Header>
+                <Label Text="📋 Historial de Movimientos"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#1E293B"
+                       Margin="0,0,0,12" />
+            </CollectionView.Header>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame CornerRadius="16"
-                           Padding="14"
-                           Margin="0,6"
-                           BackgroundColor="White"
-                           BorderColor="#E5E7EB">
-                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="4">
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Descripcion}"
-                                   FontAttributes="Bold"
-                                   FontSize="17"
-                                   TextColor="#111827" />
+                    <Border StrokeShape="RoundRectangle 16"
+                            Padding="16"
+                            Margin="0,6"
+                            Background="White"
+                            Stroke="#E2E8F0"
+                            Shadow="{Shadow Brush=Transparent}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+                            <Border Grid.RowSpan="2" 
+                                    Grid.Column="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Shadow="{Shadow Brush=Transparent}"
+                                    VerticalOptions="Center">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Ingreso">
+                                        <Setter Property="Background" Value="#D1FAE5" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Tipo}" Value="Gasto">
+                                        <Setter Property="Background" Value="#FEE2E2" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Label FontSize="18"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Ingreso">
+                                            <Setter Property="Text" Value="📈" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Gasto">
+                                            <Setter Property="Text" Value="📉" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Border>
 
                             <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding Tipo}"
+                                   Text="{Binding Descripcion}"
                                    FontAttributes="Bold"
-                                   TextColor="#2563EB" />
-
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}"
-                                   FontSize="12"
-                                   TextColor="#6B7280" />
+                                   FontSize="16"
+                                   TextColor="#1E293B" />
 
                             <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding Monto, StringFormat='RD${0:F2}'}"
+                                   Text="{Binding Fecha, StringFormat='{0:dd MMM yyyy • hh:mm tt}'}"
+                                   FontSize="12"
+                                   TextColor="#94A3B8" />
+
+                            <Label Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                                   Text="{Binding Monto, StringFormat='RD${0:N2}'}"
                                    FontSize="16"
                                    FontAttributes="Bold"
-                                   TextColor="#059669" />
+                                   VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Ingreso">
+                                        <Setter Property="TextColor" Value="#10B981" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Tipo}" Value="Gasto">
+                                        <Setter Property="TextColor" Value="#EF4444" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
                         </Grid>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

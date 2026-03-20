@@ -1,18 +1,39 @@
-﻿namespace CarWashFacil.ViewModels
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+
+namespace CarWashFacil.ViewModels
 {
+    /// <summary>
+    /// CAJA VIEWMODEL: Control de ingresos y gastos del día.
+    /// 
+    /// GRID EN XAML:
+    /// - Grid RowDefinitions="Auto,*": 
+    ///   - Row 0: ScrollView con formulario y KPIs (tamaño automático)
+    ///   - Row 1: CollectionView de movimientos (ocupa resto de pantalla)
+    /// - Grid ColumnDefinitions="*,*" para Ingresos/Gastos lado a lado
+    /// 
+    /// CICLO DE VIDA APP:
+    /// - OnSleep: Podría guardar transacción pendiente (no implementado)
+    /// - OnResume: Recarga datos por si hubo cambios en background
+    /// - AppStateService: Recibe notificaciones de LavadosViewModel (nuevos ingresos)
+    /// </summary>
     public partial class CajaViewModel : BaseViewModel
     {
         private readonly CajaService _cajaService;
         private readonly AppStateService _appStateService;
 
+        // COLECCIÓN: Binding a CollectionView en Grid.Row="1"
         public ObservableCollection<MovimientoCaja> Movimientos { get; } = new();
 
+        // PROPIEDADES FORMULARIO
         [ObservableProperty]
         private string descripcion = string.Empty;
 
         [ObservableProperty]
         private decimal monto;
 
+        // PROPIEDADES KPI: Grid superior con 2 columnas + 1 fila doble (balance)
         [ObservableProperty]
         private decimal ingresosHoy;
 
@@ -28,6 +49,7 @@
             _appStateService = appStateService;
             Titulo = "Caja";
 
+            // CICLO DE VIDA: Suscripción a eventos globales
             _appStateService.DatosActualizados += async () =>
             {
                 await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -37,6 +59,10 @@
             };
         }
 
+        /// <summary>
+        /// MÉTODO: Carga movimientos y calcula KPIs.
+        /// Grid de KPIs se actualiza al cambiar IngresosHoy/GastosHoy/BalanceHoy.
+        /// </summary>
         public async Task CargarAsync()
         {
             if (IsBusy) return;
@@ -51,6 +77,7 @@
                 foreach (var item in data.OrderByDescending(x => x.Fecha))
                     Movimientos.Add(item);
 
+                // Cálculos para Grid de KPIs
                 IngresosHoy = await _cajaService.TotalIngresosHoyAsync();
                 GastosHoy = await _cajaService.TotalGastosHoyAsync();
                 BalanceHoy = await _cajaService.BalanceHoyAsync();
@@ -65,6 +92,9 @@
             }
         }
 
+        /// <summary>
+        /// COMMAND: Registra gasto y actualiza Grid de KPIs.
+        /// </summary>
         [RelayCommand]
         private async Task RegistrarGasto()
         {
@@ -96,7 +126,7 @@
 
                 await _cajaService.AddGastoAsync(Descripcion.Trim(), Monto);
 
-                // limpiar campos
+                // Limpiar formulario
                 Descripcion = string.Empty;
                 Monto = 0;
 
@@ -129,9 +159,7 @@
                 else if (Application.Current?.Windows.Count > 0)
                     await Application.Current.Windows[0].Page!.DisplayAlert(titulo, mensaje, "OK");
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private async Task<bool> ConfirmarAsync(string titulo, string mensaje)
@@ -144,9 +172,7 @@
                 if (Application.Current?.Windows.Count > 0)
                     return await Application.Current.Windows[0].Page!.DisplayAlert(titulo, mensaje, "Sí", "No");
             }
-            catch
-            {
-            }
+            catch { }
 
             return false;
         }

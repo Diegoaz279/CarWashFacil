@@ -4,63 +4,221 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Reportes"
-    BackgroundColor="#F6F7FB">
+    BackgroundColor="#F1F5F9">
 
-    <Grid Padding="15" RowDefinitions="Auto,*">
-        <ScrollView Grid.Row="0">
-            <VerticalStackLayout Spacing="12">
-                <Label Text="Reporte mensual"
-                       FontSize="26"
-                       FontAttributes="Bold" />
+    <Grid RowDefinitions="Auto,*" Padding="20">
 
-                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
-                    <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="White" CornerRadius="16">
-                        <VerticalStackLayout>
-                            <Label Text="Lavados del mes" FontAttributes="Bold" />
-                            <Label Text="{Binding TotalLavadosMes}" FontSize="24" TextColor="#2563EB" />
-                        </VerticalStackLayout>
-                    </Frame>
-
-                    <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="White" CornerRadius="16">
-                        <VerticalStackLayout>
-                            <Label Text="Ingresos del mes" FontAttributes="Bold" />
-                            <Label Text="{Binding IngresosMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#059669" />
-                        </VerticalStackLayout>
-                    </Frame>
-
-                    <Frame Grid.Row="1" Grid.Column="0" BackgroundColor="White" CornerRadius="16">
-                        <VerticalStackLayout>
-                            <Label Text="Gastos del mes" FontAttributes="Bold" />
-                            <Label Text="{Binding GastosMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#DC2626" />
-                        </VerticalStackLayout>
-                    </Frame>
-
-                    <Frame Grid.Row="1" Grid.Column="1" BackgroundColor="White" CornerRadius="16">
-                        <VerticalStackLayout>
-                            <Label Text="Balance mensual" FontAttributes="Bold" />
-                            <Label Text="{Binding BalanceMes, StringFormat='RD${0:F2}'}" FontSize="20" TextColor="#7C3AED" />
-                        </VerticalStackLayout>
-                    </Frame>
+        <!-- Header y KPIs -->
+        <VerticalStackLayout Grid.Row="0" Spacing="16">
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="#1E293B"
+                    Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="📈 Reporte Mensual"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                        <Label Text="{Binding MesActual, StringFormat='{0:MMMM yyyy}'}"
+                               FontSize="14"
+                               TextColor="#94A3B8" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" 
+                           Text="📊"
+                           FontSize="48"
+                           VerticalOptions="Center" />
                 </Grid>
-            </VerticalStackLayout>
-        </ScrollView>
+            </Border>
 
-        <CollectionView Grid.Row="1" Margin="0,12,0,0" ItemsSource="{Binding LavadosMes}">
+            <!-- Grid 2x2 KPIs -->
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+
+                <Border Grid.Row="0" Grid.Column="0" 
+                        Background="White" 
+                        StrokeShape="RoundRectangle 20"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                        Padding="16">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border StrokeShape="RoundRectangle 12"
+                                Background="#DBEAFE"
+                                Padding="10"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="🚗"
+                                   FontSize="24" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Lavados" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding TotalLavadosMes}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#2563EB" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="1" 
+                        Background="White" 
+                        StrokeShape="RoundRectangle 20"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                        Padding="16">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border StrokeShape="RoundRectangle 12"
+                                Background="#D1FAE5"
+                                Padding="10"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="💰"
+                                   FontSize="24" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Ingresos" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding IngresosMes, StringFormat='RD${0:N0}'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#10B981" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0" 
+                        Background="White" 
+                        StrokeShape="RoundRectangle 20"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                        Padding="16">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border StrokeShape="RoundRectangle 12"
+                                Background="#FEE2E2"
+                                Padding="10"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="📉"
+                                   FontSize="24" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Gastos" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding GastosMes, StringFormat='RD${0:N0}'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#EF4444" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1" 
+                        Background="#7C3AED" 
+                        StrokeShape="RoundRectangle 20"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.2, Radius=8}"
+                        Padding="16">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border StrokeShape="RoundRectangle 12"
+                                Background="#8B5CF6"
+                                Padding="10"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="⚖️"
+                                   FontSize="24"
+                                   TextColor="White" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="Balance" 
+                                   FontSize="12" 
+                                   TextColor="#DDD6FE"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding BalanceMes, StringFormat='RD${0:N0}'}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="White" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+
+        <!-- Lista -->
+        <CollectionView Grid.Row="1" 
+                        Margin="0,16,0,0"
+                        ItemsSource="{Binding LavadosMes}">
+            <CollectionView.Header>
+                <Label Text="📋 Detalle de Operaciones"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#1E293B"
+                       Margin="0,0,0,12" />
+            </CollectionView.Header>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame CornerRadius="14" Margin="0,5" BackgroundColor="White">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Cliente}" FontAttributes="Bold" />
-                            <Label Text="{Binding Placa, StringFormat='Placa: {0}'}" />
-                            <Label Text="{Binding EmpleadoNombre, StringFormat='Empleado: {0}'}" />
-                            <Label Text="{Binding Precio, StringFormat='RD${0:F2}'}" />
-                            <Label Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy hh:mm tt}'}"
+                    <Border StrokeShape="RoundRectangle 16" 
+                            Margin="0,6" 
+                            Background="White"
+                            Stroke="#E2E8F0"
+                            Shadow="{Shadow Brush=Transparent}"
+                            Padding="16">
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
+                            <Border Grid.RowSpan="3" 
+                                    Grid.Column="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Background="#F1F5F9"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    Shadow="{Shadow Brush=Transparent}"
+                                    VerticalOptions="Center">
+                                <Label Text="🚗"
+                                       FontSize="24"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding Cliente}" 
+                                   FontAttributes="Bold"
+                                   FontSize="17"
+                                   TextColor="#1E293B" />
+
+                            <Label Grid.Row="0" Grid.Column="2"
+                                   Text="{Binding Precio, StringFormat='RD${0:N0}'}"
+                                   FontAttributes="Bold"
+                                   FontSize="16"
+                                   TextColor="#10B981" />
+
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding Placa, StringFormat='Placa: {0}'}" 
+                                   TextColor="#64748B"
+                                   FontSize="14" />
+
+                            <Label Grid.Row="1" Grid.Column="2"
+                                   Text="{Binding EmpleadoNombre, StringFormat='👤 {0}'}" 
+                                   TextColor="#64748B"
+                                   FontSize="13" />
+
+                            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                   Text="{Binding Fecha, StringFormat='📅 {0:dd MMM yyyy • hh:mm tt}'}"
                                    FontSize="12"
-                                   TextColor="Gray" />
-                        </VerticalStackLayout>
-                    </Frame>
+                                   TextColor="#94A3B8"
+                                   Margin="0,4,0,0" />
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="12" Margin="0,40">
+                    <Label Text="📭"
+                           FontSize="56"
+                           HorizontalOptions="Center" />
+                    <Label Text="No hay operaciones este mes"
+                           FontSize="16"
+                           TextColor="#64748B"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
         </CollectionView>
     </Grid>
 </ContentPage>

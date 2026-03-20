@@ -4,271 +4,432 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Lavados"
-    BackgroundColor="#F3F6FB">
+    BackgroundColor="#F1F5F9">
 
     <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="12">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Frame CornerRadius="22"
-                   Padding="18"
-                   BackgroundColor="#111827"
-                   HasShadow="False">
+            <!-- Header -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="#1E293B"
+                    Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Gestión de lavados"
+                    <Label Text="Gestión de Lavados"
                            FontSize="24"
                            FontAttributes="Bold"
                            TextColor="White" />
-                    <Label Text="Registra, selecciona y procesa cada servicio."
+                    <Label Text="Registra y controla todos los servicios"
                            FontSize="14"
-                           TextColor="#D1D5DB" />
+                           TextColor="#94A3B8" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Frame Grid.Column="0" CornerRadius="18" BackgroundColor="White">
-                    <VerticalStackLayout>
-                        <Label Text="Pendientes de hoy" FontAttributes="Bold" TextColor="#374151" />
+            <!-- KPIs -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Border Grid.Column="0" 
+                        StrokeShape="RoundRectangle 20" 
+                        Background="White"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                        Padding="16">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="⏳ Pendientes" 
+                               FontSize="12" 
+                               TextColor="#64748B"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
                         <Label Text="{Binding TotalPendientesHoy}"
-                               FontSize="24"
+                               FontSize="32"
                                FontAttributes="Bold"
-                               TextColor="#2563EB" />
+                               TextColor="#F59E0B"
+                               HorizontalOptions="Center" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <Frame Grid.Column="1" CornerRadius="18" BackgroundColor="White">
-                    <VerticalStackLayout>
-                        <Label Text="Terminados hoy" FontAttributes="Bold" TextColor="#374151" />
-                        <Label Text="{Binding TotalTerminadosHoy}"
-                               FontSize="24"
+                <Border Grid.Column="1" 
+                        StrokeShape="RoundRectangle 20" 
+                        Background="White"
+                        Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.1, Radius=8}"
+                        Padding="16">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="✅ Completados" 
+                               FontSize="12" 
+                               TextColor="#64748B"
                                FontAttributes="Bold"
-                               TextColor="#059669" />
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalTerminadosHoy}"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               TextColor="#10B981"
+                               HorizontalOptions="Center" />
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
             </Grid>
 
-            <Frame CornerRadius="18"
-                   Padding="16"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Nuevo lavado"
+            <!-- Formulario -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="White"
+                    Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="📝 Nuevo Servicio"
                            FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="#1F2937" />
+                           TextColor="#1E293B" />
 
-                    <Entry Placeholder="Cliente"
-                           Text="{Binding Cliente}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Cliente" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="Nombre"
+                                       Text="{Binding Cliente}"
+                                       Margin="12,0"
+                                       HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                    <Entry Placeholder="Placa"
-                           Text="{Binding Placa}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Placa" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="A123456"
+                                       Text="{Binding Placa}"
+                                       Margin="12,0"
+                                       HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
 
-                    <Picker Title="Tipo de lavado"
-                            ItemsSource="{Binding TiposLavado}"
-                            SelectedItem="{Binding TipoLavado}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Tipo de Lavado" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="4,0"
+                                    Background="#F8FAFC">
+                                <Picker Title="Seleccionar"
+                                        ItemsSource="{Binding TiposLavado}"
+                                        SelectedItem="{Binding TipoLavado}"
+                                        HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                    <Entry Placeholder="Precio"
-                           Keyboard="Numeric"
-                           Text="{Binding Precio}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Precio (RD$)" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="0"
+                                    Background="#F8FAFC">
+                                <Entry Placeholder="0.00"
+                                       Keyboard="Numeric"
+                                       Text="{Binding Precio}"
+                                       Margin="12,0"
+                                       HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
 
-                    <Picker Title="Empleado"
-                            ItemsSource="{Binding Empleados}"
-                            ItemDisplayBinding="{Binding Nombre}"
-                            SelectedItem="{Binding EmpleadoSeleccionado}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Empleado" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="4,0"
+                                    Background="#F8FAFC">
+                                <Picker Title="Seleccionar"
+                                        ItemsSource="{Binding Empleados}"
+                                        ItemDisplayBinding="{Binding Nombre}"
+                                        SelectedItem="{Binding EmpleadoSeleccionado}"
+                                        HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
 
-                    <Picker Title="Estado"
-                            ItemsSource="{Binding Estados}"
-                            SelectedItem="{Binding Estado}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Estado" 
+                                   FontSize="12" 
+                                   TextColor="#64748B"
+                                   FontAttributes="Bold" />
+                            <Border Stroke="#E2E8F0" 
+                                    StrokeShape="RoundRectangle 12" 
+                                    Padding="4,0"
+                                    Background="#F8FAFC">
+                                <Picker Title="Seleccionar"
+                                        ItemsSource="{Binding Estados}"
+                                        SelectedItem="{Binding Estado}"
+                                        HeightRequest="44" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
 
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
                         <Button Grid.Column="0"
-                                Text="Guardar"
-                                HeightRequest="48"
+                                Text="💾 Guardar"
+                                HeightRequest="50"
                                 CornerRadius="14"
                                 BackgroundColor="#2563EB"
                                 TextColor="White"
+                                FontAttributes="Bold"
                                 Command="{Binding GuardarLavadoCommand}" />
 
                         <Button Grid.Column="1"
-                                Text="Limpiar"
-                                HeightRequest="48"
+                                Text="🔄 Limpiar"
+                                HeightRequest="50"
                                 CornerRadius="14"
-                                BackgroundColor="#E5E7EB"
-                                TextColor="#111827"
+                                BackgroundColor="#F1F5F9"
+                                TextColor="#64748B"
+                                FontAttributes="Bold"
                                 Command="{Binding LimpiarFormularioCommand}" />
                     </Grid>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame CornerRadius="18"
-                   Padding="16"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="10">
+            <!-- Lista Pendientes -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="White"
+                    Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                <VerticalStackLayout Spacing="16">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="Lavados pendientes"
+                        <Label Text="⏳ Pendientes"
                                FontSize="20"
                                FontAttributes="Bold"
-                               TextColor="#1F2937" />
-                        <Label Grid.Column="1"
-                               Text="{Binding LavadosPendientes.Count, StringFormat='Total: {0}'}"
-                               TextColor="#6B7280"
-                               VerticalOptions="Center" />
+                               TextColor="#1E293B" />
+                        <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 20"
+                                Background="#FEF3C7"
+                                Padding="12,6"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="{Binding LavadosPendientes.Count, StringFormat='{0} servicios'}"
+                                   TextColor="#D97706"
+                                   FontAttributes="Bold"
+                                   FontSize="12" />
+                        </Border>
                     </Grid>
 
                     <Label Text="{Binding DetalleLavadoSeleccionado}"
                            FontSize="13"
-                           TextColor="#6B7280" />
+                           TextColor="#64748B"
+                           FontAttributes="Italic" />
 
-                    <Button Text="Marcar como terminado"
-                            HeightRequest="48"
-                            CornerRadius="14"
-                            BackgroundColor="#10B981"
-                            TextColor="White"
-                            Command="{Binding MarcarTerminadoCommand}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Text="✅ Completar"
+                                HeightRequest="48"
+                                CornerRadius="12"
+                                BackgroundColor="#10B981"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                Command="{Binding MarcarTerminadoCommand}" />
 
-                    <Button Text="Cancelar lavado"
-                            HeightRequest="48"
-                            CornerRadius="14"
-                            BackgroundColor="#EF4444"
-                            TextColor="White"
-                            Command="{Binding CancelarLavadoCommand}" />
+                        <Button Text="❌ Cancelar"
+                                HeightRequest="48"
+                                CornerRadius="12"
+                                BackgroundColor="#EF4444"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                Command="{Binding CancelarLavadoCommand}" />
+                    </Grid>
 
                     <CollectionView ItemsSource="{Binding LavadosPendientes}">
                         <CollectionView.EmptyView>
-                            <Label Text="No hay lavados pendientes."
-                                   HorizontalOptions="Center"
-                                   TextColor="Gray"
-                                   Margin="0,20,0,0" />
+                            <VerticalStackLayout Spacing="12" Margin="0,20">
+                                <Label Text="🎉"
+                                       FontSize="48"
+                                       HorizontalOptions="Center" />
+                                <Label Text="¡No hay servicios pendientes!"
+                                       FontSize="16"
+                                       TextColor="#64748B"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame CornerRadius="16"
-                                       Padding="14"
-                                       Margin="0,6"
-                                       BackgroundColor="#F9FAFB"
-                                       BorderColor="#E5E7EB">
-                                    <Frame.GestureRecognizers>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        Padding="16"
+                                        Margin="0,6"
+                                        Background="#FFFBEB"
+                                        Stroke="#FCD34D"
+                                        Shadow="{Shadow Brush=Transparent}">
+                                    <Border.GestureRecognizers>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SeleccionarLavadoCommand}"
                                             CommandParameter="{Binding .}" />
-                                    </Frame.GestureRecognizers>
+                                    </Border.GestureRecognizers>
 
-                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
-                                        <Label Grid.Row="0" Grid.Column="0"
-                                               Text="{Binding Cliente}"
-                                               FontAttributes="Bold"
-                                               FontSize="18"
-                                               TextColor="#111827" />
+                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
+                                        <Border Grid.RowSpan="3" 
+                                                Grid.Column="0"
+                                                StrokeShape="RoundRectangle 12"
+                                                Background="#F59E0B"
+                                                WidthRequest="48"
+                                                HeightRequest="48"
+                                                Shadow="{Shadow Brush=Transparent}"
+                                                VerticalOptions="Center">
+                                            <Label Text="⏳"
+                                                   FontSize="24"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
 
                                         <Label Grid.Row="0" Grid.Column="1"
-                                               Text="{Binding Estado}"
-                                               TextColor="#2563EB"
-                                               FontAttributes="Bold" />
+                                               Text="{Binding Cliente}"
+                                               FontAttributes="Bold"
+                                               FontSize="17"
+                                               TextColor="#1E293B" />
 
-                                        <Label Grid.Row="1" Grid.Column="0"
-                                               Text="{Binding Placa, StringFormat='Placa: {0}'}"
-                                               TextColor="#4B5563" />
+                                        <Label Grid.Row="0" Grid.Column="2"
+                                               Text="{Binding Precio, StringFormat='RD${0:N0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="#2563EB" />
 
                                         <Label Grid.Row="1" Grid.Column="1"
-                                               Text="{Binding Precio, StringFormat='RD${0:F2}'}"
-                                               TextColor="#059669"
+                                               Text="{Binding Placa, StringFormat='🚗 Placa: {0}'}"
+                                               TextColor="#64748B"
+                                               FontSize="14" />
+
+                                        <Label Grid.Row="1" Grid.Column="2"
+                                               Text="{Binding TipoLavado}"
+                                               TextColor="#D97706"
                                                FontAttributes="Bold"
-                                               HorizontalTextAlignment="End" />
+                                               FontSize="12" />
 
-                                        <Label Grid.Row="2" Grid.Column="0"
-                                               Text="{Binding TipoLavado, StringFormat='Lavado: {0}'}"
-                                               FontSize="13"
-                                               TextColor="#6B7280" />
-
-                                        <Label Grid.Row="2" Grid.Column="1"
-                                               Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy hh:mm tt}'}"
+                                        <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                               Text="{Binding Fecha, StringFormat='📅 {0:dd MMM yyyy • hh:mm tt}'}"
                                                FontSize="12"
-                                               TextColor="#9CA3AF"
-                                               HorizontalTextAlignment="End" />
+                                               TextColor="#94A3B8"
+                                               Margin="0,4,0,0" />
                                     </Grid>
-                                </Frame>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame CornerRadius="18"
-                   Padding="16"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="10">
+            <!-- Lista Completados -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="White"
+                    Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                <VerticalStackLayout Spacing="16">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="Lavados terminados de hoy"
+                        <Label Text="✅ Completados Hoy"
                                FontSize="20"
                                FontAttributes="Bold"
-                               TextColor="#1F2937" />
-                        <Label Grid.Column="1"
-                               Text="{Binding LavadosTerminadosHoy.Count, StringFormat='Total: {0}'}"
-                               TextColor="#6B7280"
-                               VerticalOptions="Center" />
+                               TextColor="#1E293B" />
+                        <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 20"
+                                Background="#D1FAE5"
+                                Padding="12,6"
+                                Shadow="{Shadow Brush=Transparent}">
+                            <Label Text="{Binding LavadosTerminadosHoy.Count, StringFormat='{0} servicios'}"
+                                   TextColor="#059669"
+                                   FontAttributes="Bold"
+                                   FontSize="12" />
+                        </Border>
                     </Grid>
 
                     <CollectionView ItemsSource="{Binding LavadosTerminadosHoy}">
                         <CollectionView.EmptyView>
-                            <Label Text="No hay lavados terminados hoy."
-                                   HorizontalOptions="Center"
-                                   TextColor="Gray"
-                                   Margin="0,20,0,0" />
+                            <VerticalStackLayout Spacing="12" Margin="0,20">
+                                <Label Text="📋"
+                                       FontSize="48"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Aún no hay servicios completados hoy"
+                                       FontSize="16"
+                                       TextColor="#64748B"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame CornerRadius="16"
-                                       Padding="14"
-                                       Margin="0,6"
-                                       BackgroundColor="#F0FDF4"
-                                       BorderColor="#BBF7D0">
-                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
-                                        <Label Grid.Row="0" Grid.Column="0"
-                                               Text="{Binding Cliente}"
-                                               FontAttributes="Bold"
-                                               FontSize="18"
-                                               TextColor="#111827" />
+                                <Border StrokeShape="RoundRectangle 16"
+                                        Padding="16"
+                                        Margin="0,6"
+                                        Background="#F0FDF4"
+                                        Stroke="#86EFAC"
+                                        Shadow="{Shadow Brush=Transparent}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
+                                        <Border Grid.RowSpan="3" 
+                                                Grid.Column="0"
+                                                StrokeShape="RoundRectangle 12"
+                                                Background="#10B981"
+                                                WidthRequest="48"
+                                                HeightRequest="48"
+                                                Shadow="{Shadow Brush=Transparent}"
+                                                VerticalOptions="Center">
+                                            <Label Text="✅"
+                                                   FontSize="24"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
 
                                         <Label Grid.Row="0" Grid.Column="1"
-                                               Text="Terminado"
-                                               TextColor="#059669"
-                                               FontAttributes="Bold" />
+                                               Text="{Binding Cliente}"
+                                               FontAttributes="Bold"
+                                               FontSize="17"
+                                               TextColor="#1E293B" />
 
-                                        <Label Grid.Row="1" Grid.Column="0"
-                                               Text="{Binding Placa, StringFormat='Placa: {0}'}"
-                                               TextColor="#4B5563" />
+                                        <Label Grid.Row="0" Grid.Column="2"
+                                               Text="{Binding Precio, StringFormat='RD${0:N0}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="#059669" />
 
                                         <Label Grid.Row="1" Grid.Column="1"
-                                               Text="{Binding Precio, StringFormat='RD${0:F2}'}"
+                                               Text="{Binding Placa, StringFormat='🚗 Placa: {0}'}"
+                                               TextColor="#64748B"
+                                               FontSize="14" />
+
+                                        <Label Grid.Row="1" Grid.Column="2"
+                                               Text="Completado"
                                                TextColor="#059669"
                                                FontAttributes="Bold"
-                                               HorizontalTextAlignment="End" />
-
-                                        <Label Grid.Row="2" Grid.Column="0"
-                                               Text="{Binding EmpleadoNombre, StringFormat='Empleado: {0}'}"
-                                               FontSize="13"
-                                               TextColor="#6B7280" />
+                                               FontSize="12" />
 
                                         <Label Grid.Row="2" Grid.Column="1"
-                                               Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy hh:mm tt}'}"
+                                               Text="{Binding EmpleadoNombre, StringFormat='👤 {0}'}"
+                                               FontSize="13"
+                                               TextColor="#64748B" />
+
+                                        <Label Grid.Row="2" Grid.Column="2"
+                                               Text="{Binding Fecha, StringFormat='{0:hh:mm tt}'}"
                                                FontSize="12"
-                                               TextColor="#9CA3AF"
-                                               HorizontalTextAlignment="End" />
+                                               TextColor="#94A3B8" />
                                     </Grid>
-                                </Frame>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
                                Color="#2563EB"
-                               HorizontalOptions="Center" />
+                               Scale="0.8" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

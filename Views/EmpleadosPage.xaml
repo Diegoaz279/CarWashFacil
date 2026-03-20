@@ -4,109 +4,194 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Empleados"
-    BackgroundColor="#F3F6FB">
+    BackgroundColor="#F1F5F9">
 
     <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="12">
+        <VerticalStackLayout Padding="20" Spacing="16">
 
-            <Frame CornerRadius="22"
-                   Padding="18"
-                   BackgroundColor="#111827"
-                   HasShadow="False">
+            <!-- Header -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="#1E293B"
+                    Shadow="{Shadow Brush=#000000, Offset='0,8', Opacity=0.3, Radius=12}">
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="Gestión de empleados"
+                    <Label Text="👥 Gestión de Empleados"
                            FontSize="24"
                            FontAttributes="Bold"
                            TextColor="White" />
-                    <Label Text="Toque un empleado para ver acciones."
+                    <Label Text="Administra tu equipo de trabajo"
                            FontSize="14"
-                           TextColor="#D1D5DB" />
+                           TextColor="#94A3B8" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame CornerRadius="18"
-                   Padding="16"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Nuevo empleado"
+            <!-- Formulario -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="White"
+                    Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="➕ Nuevo Empleado"
                            FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="#1F2937" />
+                           TextColor="#1E293B" />
 
-                    <Entry Placeholder="Nombre"
-                           Text="{Binding Nombre}" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nombre Completo" 
+                               FontSize="12" 
+                               TextColor="#64748B"
+                               FontAttributes="Bold" />
+                        <Border Stroke="#E2E8F0" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="0"
+                                Background="#F8FAFC">
+                            <Entry Placeholder="Ej: Juan Pérez"
+                                   Text="{Binding Nombre}"
+                                   Margin="12,0"
+                                   HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
 
-                    <Entry Placeholder="Teléfono"
-                           Text="{Binding Telefono}"
-                           Keyboard="Telephone" />
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Teléfono" 
+                               FontSize="12" 
+                               TextColor="#64748B"
+                               FontAttributes="Bold" />
+                        <Border Stroke="#E2E8F0" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="0"
+                                Background="#F8FAFC">
+                            <Entry Placeholder="(809) 555-1234"
+                                   Text="{Binding Telefono}"
+                                   Keyboard="Telephone"
+                                   Margin="12,0"
+                                   HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
 
-                    <HorizontalStackLayout Spacing="10">
-                        <Label Text="Activo"
-                               VerticalOptions="Center" />
-                        <Switch IsToggled="{Binding Activo}" />
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                        <Label Text="Empleado Activo"
+                               VerticalOptions="Center"
+                               FontAttributes="Bold"
+                               TextColor="#1E293B" />
+                        <Switch IsToggled="{Binding Activo}"
+                                OnColor="#10B981"
+                                ThumbColor="White" />
                     </HorizontalStackLayout>
 
-                    <Button Text="Guardar empleado"
-                            HeightRequest="48"
+                    <Button Text="💾 Guardar Empleado"
+                            HeightRequest="52"
                             CornerRadius="14"
                             BackgroundColor="#2563EB"
                             TextColor="White"
+                            FontAttributes="Bold"
                             Command="{Binding GuardarEmpleadoCommand}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame CornerRadius="18"
-                   Padding="16"
-                   BackgroundColor="White"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Lista de empleados"
+            <!-- Lista -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Padding="20"
+                    Background="White"
+                    Shadow="{Shadow Brush=#000000, Offset='0,4', Opacity=0.15, Radius=8}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="📋 Equipo de Trabajo"
                            FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="#1F2937" />
+                           TextColor="#1E293B" />
 
                     <CollectionView ItemsSource="{Binding Empleados}">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Spacing="12" Margin="0,20">
+                                <Label Text="👤"
+                                       FontSize="48"
+                                       HorizontalOptions="Center" />
+                                <Label Text="No hay empleados registrados"
+                                       FontSize="16"
+                                       TextColor="#64748B"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame CornerRadius="16"
-                                       Padding="14"
-                                       Margin="0,6"
-                                       BackgroundColor="#F9FAFB"
-                                       BorderColor="#E5E7EB">
-                                    <Frame.GestureRecognizers>
+                                <Border StrokeShape="RoundRectangle 16"
+                                        Padding="16"
+                                        Margin="0,6"
+                                        Background="#F8FAFC"
+                                        Stroke="#E2E8F0"
+                                        Shadow="{Shadow Brush=Transparent}">
+                                    <Border.GestureRecognizers>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SeleccionarEmpleadoCommand}"
                                             CommandParameter="{Binding .}" />
-                                    </Frame.GestureRecognizers>
+                                    </Border.GestureRecognizers>
 
-                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="5">
-                                        <Label Grid.Row="0" Grid.Column="0"
-                                               Text="{Binding Nombre}"
-                                               FontAttributes="Bold"
-                                               FontSize="18"
-                                               TextColor="#111827" />
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Border Grid.Column="0"
+                                                StrokeShape="RoundRectangle 25"
+                                                Background="#DBEAFE"
+                                                WidthRequest="50"
+                                                HeightRequest="50"
+                                                Shadow="{Shadow Brush=Transparent}"
+                                                VerticalOptions="Center">
+                                            <Label Text="{Binding Iniciales}"
+                                                   FontSize="20"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#2563EB"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
 
-                                        <Label Grid.Row="0" Grid.Column="1"
-                                               Text="{Binding Activo, StringFormat='Activo: {0}'}"
-                                               TextColor="#2563EB"
-                                               FontSize="12" />
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label Text="{Binding Nombre}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="17"
+                                                   TextColor="#1E293B" />
+                                            <Label Text="{Binding Telefono, StringFormat='📱 {0}'}"
+                                                   TextColor="#64748B"
+                                                   FontSize="14" />
+                                        </VerticalStackLayout>
 
-                                        <Label Grid.Row="1" Grid.Column="0"
-                                               Text="{Binding Telefono}"
-                                               TextColor="#6B7280" />
+                                        <Border Grid.Column="2"
+                                                StrokeShape="RoundRectangle 20"
+                                                Padding="10,6"
+                                                Shadow="{Shadow Brush=Transparent}"
+                                                VerticalOptions="Center">
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border" Binding="{Binding Activo}" Value="True">
+                                                    <Setter Property="Background" Value="#D1FAE5" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Border" Binding="{Binding Activo}" Value="False">
+                                                    <Setter Property="Background" Value="#F1F5F9" />
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Label FontSize="11"
+                                                   FontAttributes="Bold">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Activo}" Value="True">
+                                                        <Setter Property="Text" Value="Activo" />
+                                                        <Setter Property="TextColor" Value="#059669" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Activo}" Value="False">
+                                                        <Setter Property="Text" Value="Inactivo" />
+                                                        <Setter Property="TextColor" Value="#64748B" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Border>
                                     </Grid>
-                                </Frame>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
                                Color="#2563EB"
-                               HorizontalOptions="Center" />
+                               Scale="0.8" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

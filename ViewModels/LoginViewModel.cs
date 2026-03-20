@@ -1,5 +1,21 @@
-﻿namespace CarWashFacil.ViewModels
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace CarWashFacil.ViewModels
 {
+    /// <summary>
+    /// LOGIN VIEWMODEL: Maneja autenticación y navegación inicial.
+    /// 
+    /// INYECCIÓN DE DEPENDENCIAS (DI):
+    /// - AuthService: Singleton, persiste durante toda la app
+    /// - LifecycleService: Singleton, registra eventos de ciclo de vida
+    /// - IServiceProvider: Factory para crear AppShell (navegación post-login)
+    /// 
+    /// CICLO DE VIDA APLICACIÓN MÓVIL:
+    /// - OnStart: Se ejecuta al abrir la app (MainPage = LoginPage)
+    /// - OnResume: No aplica aquí, pero LifecycleService lo registra
+    /// - OnSleep: App en background, LifecycleService guarda estado
+    /// </summary>
     public partial class LoginViewModel : BaseViewModel
     {
         private readonly AuthService _authService;
@@ -12,7 +28,13 @@
         [ObservableProperty]
         private string password = string.Empty;
 
-        public LoginViewModel(AuthService authService, LifecycleService lifecycleService, IServiceProvider serviceProvider)
+        /// <summary>
+        /// CONSTRUCTOR DI: Los servicios se inyectan automáticamente por MauiProgram.cs
+        /// </summary>
+        public LoginViewModel(
+            AuthService authService,
+            LifecycleService lifecycleService,
+            IServiceProvider serviceProvider)
         {
             _authService = authService;
             _lifecycleService = lifecycleService;
@@ -20,6 +42,13 @@
             Titulo = "Login";
         }
 
+        /// <summary>
+        /// COMMAND: IniciarSesion - Valida credenciales y navega al Shell principal.
+        /// 
+        /// GRID/XAML RELACIONADO:
+        /// - LoginPage.xaml usa Grid para centrar el formulario verticalmente
+        /// - Grid.RowDefinitions="Auto,*" separa header del formulario
+        /// </summary>
         [RelayCommand]
         private async Task IniciarSesion()
         {
@@ -29,6 +58,7 @@
             {
                 IsBusy = true;
 
+                // Validaciones de campos vacíos
                 if (string.IsNullOrWhiteSpace(Usuario) && string.IsNullOrWhiteSpace(Password))
                 {
                     await MostrarMensajeAsync("Validación", "Debe ingresar usuario y contraseña.");
@@ -55,8 +85,11 @@
                     return;
                 }
 
+                // REGISTRO CICLO DE VIDA: Evento de login exitoso
                 _ = _lifecycleService.AddEventSafeAsync("Login exitoso");
 
+                // NAVEGACIÓN: Reemplaza la ventana actual con AppShell (MainPage)
+                // Esto destruye el LoginViewModel (Transient) y crea los demás ViewModels
                 Application.Current!.Windows[0].Page = _serviceProvider.GetRequiredService<AppShell>();
             }
             catch (Exception ex)
@@ -78,6 +111,7 @@
             }
             catch
             {
+                // Silenciar errores de UI si la app está en background
             }
         }
     }

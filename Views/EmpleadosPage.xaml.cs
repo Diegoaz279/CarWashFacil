@@ -12,25 +12,11 @@ namespace CarWashFacil.Views
             _lifecycleService = lifecycleService;
         }
 
+        // ? AGREGAR ESTE MÉTODO
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            try
-            {
-                await _viewModel.CargarAsync();
-                _ = _lifecycleService.AddEventSafeAsync("Página Empleados abierta");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error EmpleadosPage OnAppearing: {ex}");
-            }
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            _ = _lifecycleService.AddEventSafeAsync("Página Empleados cerrada");
+            await _viewModel.CargarAsync();
         }
     }
 }

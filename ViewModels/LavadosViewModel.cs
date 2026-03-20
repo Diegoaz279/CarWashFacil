@@ -1,5 +1,22 @@
-﻿namespace CarWashFacil.ViewModels
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+
+namespace CarWashFacil.ViewModels
 {
+    /// <summary>
+    /// LAVADOS VIEWMODEL: Gestión completa de servicios de lavado.
+    /// 
+    /// GRID AVANZADO EN XAML:
+    /// - Formulario: Grid ColumnDefinitions="*,*" para 2 columnas (Cliente/Placa, Tipo/Precio)
+    /// - Lista items: Grid ColumnDefinitions="Auto,*,Auto" para icono + info + precio
+    /// - Lista items: RowDefinitions="Auto,Auto,Auto" para apilar verticalmente los datos
+    /// 
+    /// CICLO DE VIDA APP:
+    /// - OnSleep: Guarda estado del formulario parcial (no implementado, pero podría)
+    /// - OnResume: Recarga datos por si cambiaron en background
+    /// - AppStateService: Notifica a otros ViewModels cuando hay cambios (Caja, Home)
+    /// </summary>
     public partial class LavadosViewModel : BaseViewModel
     {
         private readonly LavadoService _lavadoService;
@@ -7,10 +24,12 @@
         private readonly EmpleadoService _empleadoService;
         private readonly AppStateService _appStateService;
 
+        // COLECCIONES: Bindings a CollectionView en XAML
         public ObservableCollection<Lavado> LavadosPendientes { get; } = new();
         public ObservableCollection<Lavado> LavadosTerminadosHoy { get; } = new();
         public ObservableCollection<Empleado> Empleados { get; } = new();
 
+        // LISTAS ESTÁTICAS: Opciones para Pickers en XAML
         public ObservableCollection<string> TiposLavado { get; } = new()
         {
             "Básico",
@@ -26,6 +45,7 @@
             "Cancelado"
         };
 
+        // PROPIEDADES FORMULARIO: Bindings TwoWay a Entries/Pickers
         [ObservableProperty]
         private string cliente = string.Empty;
 
@@ -50,6 +70,7 @@
         [ObservableProperty]
         private string detalleLavadoSeleccionado = "Toque un lavado para ver opciones.";
 
+        // PROPIEDADES KPI: Mostradas en Grid superior de 2 columnas
         [ObservableProperty]
         private int totalPendientesHoy;
 
@@ -69,6 +90,7 @@
 
             Titulo = "Lavados";
 
+            // CICLO DE VIDA: Suscripción a eventos globales de actualización
             _appStateService.DatosActualizados += async () =>
             {
                 await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -78,14 +100,23 @@
             };
         }
 
+        /// <summary>
+        /// PARTIAL METHOD: Se ejecuta automáticamente cuando cambia TipoLavado.
+        /// Actualiza el precio base según el tipo seleccionado.
+        /// </summary>
         partial void OnTipoLavadoChanged(string value)
         {
+            // Solo actualiza si el precio es uno de los valores por defecto
             if (Precio <= 0 || Precio == 350 || Precio == 700 || Precio == 500 || Precio == 900)
             {
                 Precio = ObtenerPrecioBase(value);
             }
         }
 
+        /// <summary>
+        /// PARTIAL METHOD: Actualiza el detalle mostrado cuando se selecciona un lavado.
+        /// Binding: Label en XAML con texto multilinea (Grid.Row múltiple).
+        /// </summary>
         partial void OnLavadoSeleccionadoChanged(Lavado? value)
         {
             if (value == null)
@@ -94,6 +125,7 @@
                 return;
             }
 
+            // Grid en XAML muestra esto en múltiples líneas usando LineBreakMode
             DetalleLavadoSeleccionado =
                 $"Cliente: {value.Cliente}\n" +
                 $"Placa: {value.Placa}\n" +
@@ -104,6 +136,10 @@
                 $"Fecha: {value.Fecha:dd/MM/yyyy hh:mm tt}";
         }
 
+        /// <summary>
+        /// MÉTODO PÚBLICO: Carga inicial desde OnAppearing de la página.
+        /// Ciclo de vida: Se ejecuta cada vez que la página aparece (navegación).
+        /// </summary>
         public async Task CargarAsync()
         {
             if (IsBusy) return;
@@ -123,6 +159,10 @@
             }
         }
 
+        /// <summary>
+        /// MÉTODO PRIVADO: Recarga silenciosa desde eventos de otro ViewModel.
+        /// Ciclo de vida: No muestra loading ni errores (background update).
+        /// </summary>
         private async Task RecargarDesdeEventosAsync()
         {
             try
@@ -135,6 +175,10 @@
             }
         }
 
+        /// <summary>
+        /// LÓGICA DE CARGA: Llena las colecciones ObservableCollection.
+        /// Grid de KPIs se actualiza automáticamente al cambiar TotalPendientesHoy/TotalTerminadosHoy.
+        /// </summary>
         private async Task CargarInternoAsync()
         {
             LavadosPendientes.Clear();
@@ -161,6 +205,10 @@
             TotalTerminadosHoy = LavadosTerminadosHoy.Count;
         }
 
+        /// <summary>
+        /// COMMAND: Guarda nuevo lavado y notifica a otros ViewModels.
+        /// Grid del formulario se limpia después de guardar.
+        /// </summary>
         [RelayCommand]
         private async Task GuardarLavado()
         {
@@ -199,6 +247,7 @@
 
                 await _lavadoService.AddAsync(lavado);
 
+                // Si se crea como terminado, genera ingreso en caja automáticamente
                 if (lavado.Estado == "Terminado")
                 {
                     await _cajaService.AddIngresoAsync($"Lavado {lavado.Placa}", lavado.Precio);
@@ -206,10 +255,10 @@
 
                 LimpiarFormulario();
 
-                // recarga inmediata en esta misma pantalla
+                // CICLO DE VIDA: Recarga local inmediata
                 await CargarInternoAsync();
 
-                // notifica a las demás pantallas
+                // CICLO DE VIDA: Notifica a Home y Caja para que se actualicen
                 _appStateService.NotificarCambios();
 
                 await MostrarMensajeAsync("Correcto", "Lavado guardado correctamente.");
@@ -224,6 +273,10 @@
             }
         }
 
+        /// <summary>
+        /// COMMAND: Selección de lavado desde CollectionView (Grid item).
+        /// Muestra ActionSheet con opciones según estado.
+        /// </summary>
         [RelayCommand]
         private async Task SeleccionarLavado(Lavado? lavado)
         {
@@ -291,6 +344,8 @@
         {
             LimpiarFormulario();
         }
+
+        // MÉTODOS PRIVADOS: Lógica de negocio
 
         private async Task TerminarLavadoInternoAsync(Lavado lavado)
         {
@@ -443,6 +498,8 @@
             Estado = "Pendiente";
             EmpleadoSeleccionado = null;
         }
+
+        // HELPERS UI
 
         private async Task<string> MostrarAccionesLavadoAsync(Lavado lavado)
         {
